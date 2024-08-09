@@ -5,7 +5,9 @@ function Navbar() {
     <header
       className={`flex w-full h-[35px] fixed top-0 items-center justify-between p-3 dark:bg-white dark:bg-clip-padding dark:backdrop-filter dark:backdrop-blur-sm dark:bg-opacity-10`}
     >
-      <p className={`merienda font-[800] text-[19px] text-secondary`}>Trivia</p>
+      <p className={`merienda font-[800] text-[19px] text-secondary2`}>
+        Trivia
+      </p>
       <nav className={`flex justify-between w-[30%]`}>
         <ul className={`flex w-fit space-x-4`}>
           <li>

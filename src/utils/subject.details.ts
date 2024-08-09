@@ -1,4 +1,4 @@
-interface SubjectData {
+export interface SubjectData {
   name: string;
   id: number;
   color: string;
@@ -7,7 +7,7 @@ export const subjects: SubjectData[] = [
   {
     name: "Science: Computers",
     id: 18,
-    color: "bg-secondary",
+    color: "bg-secondary2",
   },
   {
     name: "Science: Mathematics",

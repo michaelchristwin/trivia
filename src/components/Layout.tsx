@@ -6,7 +6,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div
         className={`w-[260px] h-[100vh] flex flex-col p-[40px] border-r-2 border-[#37464f]`}
       >
-        <p className={`merienda font-[900] text-[23px] text-secondary`}>
+        <p className={`merienda font-[900] text-[25px] text-secondary2`}>
           trivia
         </p>
         <ul className={`w-full mt-[40px] space-y-[20px]`}>
