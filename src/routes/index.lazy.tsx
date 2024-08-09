@@ -1,5 +1,4 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { useNavigate } from "@tanstack/react-router";
 import { subjects } from "@/utils/subject.details";
 import { motion } from "framer-motion";
 import QuizDialog from "@/components/QuizDialog";
@@ -9,7 +8,6 @@ export const Route = createLazyFileRoute("/")({
 });
 
 function Index() {
-  const navigate = useNavigate();
   return (
     <div className={`w-full grid lg:grid-cols-3 p-[40px] gap-8`}>
       {subjects.map((subject) => (
@@ -19,14 +17,6 @@ function Index() {
             whileTap={{ scale: 0.9 }}
             type="button"
             key={subject.id}
-            // onClick={() =>
-            //   navigate({
-            //     to: "/subjects/$subject",
-            //     params: {
-            //       subject: `${subject.id}`,
-            //     },
-            //   })
-            // }
             className={`${subject.color} px-1 h-[43px] rounded-[6px] text-[16px]`}
           >
             {subject.name}

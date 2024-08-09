@@ -5,16 +5,28 @@ import {
 } from "../../utils/session.manager";
 
 export const Route = createFileRoute("/subjects/$subject")({
-  loader: async ({ params }) => {
+  validateSearch: (search) =>
+    search as {
+      difficulty: string;
+      type: string;
+      amount: number;
+    },
+  loaderDeps: ({ search: { difficulty, type, amount } }) => ({
+    difficulty,
+    type,
+    amount,
+  }),
+  loader: async ({ params, deps: { difficulty, amount, type } }) => {
     console.info(`Fetching questions for subjectId ${params.subject}`);
     let token;
     if (isTokenExpired()) {
       token = await refreshSessionToken();
     }
+
     let tokenData = JSON.parse(localStorage.getItem("sessionTokenData") as any);
     token = tokenData.token;
     return fetch(
-      `https://opentdb.com/api.php?amount=10&category=${params.subject}&difficulty=medium&type=multiple&token=${token}`
+      `https://opentdb.com/api.php?amount=${amount}&category=${params.subject}&difficulty=${difficulty}&type=${type}&token=${token}`
     ).then((r) => r.json());
   },
   component: Quiz,

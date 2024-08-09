@@ -12,7 +12,7 @@ export const subjects: SubjectData[] = [
   {
     name: "Science: Mathematics",
     id: 19,
-    color: "bg-red-500",
+    color: "bg-orange-500",
   },
   {
     name: "General Knowledge",
