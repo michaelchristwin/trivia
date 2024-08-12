@@ -12,7 +12,7 @@ import {
 import { useNavigate } from "@tanstack/react-router";
 import { SubjectData } from "@/utils/subject.details";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { cn } from "@/lib/utils";
+
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -30,10 +30,18 @@ const defaultState: searchParms = {
   difficulty: "easy",
   amount: 10,
 };
+
 function QuizDialog({ children, details }: QuizDialogProps) {
+  const { color } = details;
   const navigate = useNavigate();
   const [params, setParams] = useState(defaultState);
   const { difficulty, type, amount } = params;
+  const colorVariants = {
+    secondary2: "!bg-secondary2",
+    indigo: "!bg-indigo-600",
+    orange: "!bg-orange-500",
+    green: "!bg-green-400",
+  };
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -60,7 +68,7 @@ function QuizDialog({ children, details }: QuizDialogProps) {
             }
           >
             <ToggleGroupItem value="multiple">Multiple</ToggleGroupItem>
-            <ToggleGroupItem value="boolean">Boolean</ToggleGroupItem>
+            <ToggleGroupItem value="boolean">True or False</ToggleGroupItem>
           </ToggleGroup>
         </div>
         <div className={`block w-full space-y-2`}>
@@ -106,12 +114,7 @@ function QuizDialog({ children, details }: QuizDialogProps) {
               type="button"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.9 }}
-              className={cn(
-                `${details.color}`,
-                `text-white`,
-
-                `hover:text-black`
-              )}
+              className={`text-white ${colorVariants[color as keyof typeof colorVariants]}`}
               onClick={() =>
                 navigate({
                   to: "/subjects/$subject",

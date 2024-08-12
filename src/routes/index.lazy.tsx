@@ -8,6 +8,12 @@ export const Route = createLazyFileRoute("/")({
 });
 
 function Index() {
+  const colorVariants = {
+    secondary2: "bg-secondary2",
+    indigo: "bg-indigo-600",
+    orange: "bg-orange-500",
+    green: "bg-green-400",
+  };
   return (
     <div className={`w-full grid lg:grid-cols-3 p-[40px] gap-8`}>
       {subjects.map((subject) => (
@@ -17,7 +23,7 @@ function Index() {
             whileTap={{ scale: 0.9 }}
             type="button"
             key={subject.id}
-            className={`${subject.color} px-1 h-[43px] rounded-[6px] text-[16px]`}
+            className={`${colorVariants[subject.color as keyof typeof colorVariants]} px-1 h-[43px] rounded-[6px] text-[16px]`}
           >
             {subject.name}
           </motion.button>
