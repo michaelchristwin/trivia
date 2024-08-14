@@ -42,6 +42,7 @@ function QuizDialog({ children, details }: QuizDialogProps) {
     orange: "!bg-orange-500",
     green: "!bg-green-400",
   };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
