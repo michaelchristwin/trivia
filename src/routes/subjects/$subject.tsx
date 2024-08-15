@@ -203,7 +203,7 @@ function Quiz() {
             >
               {!isCorrect && areOptionsDisabled && (
                 <p className={`mr-4 italic text-neutral-400`}>
-                  Correct answer: {correct_answer}
+                  <b>Correct answer:</b> {correct_answer}
                 </p>
               )}
               {areOptionsDisabled && qIndex + 1 !== data.length && (

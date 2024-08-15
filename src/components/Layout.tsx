@@ -31,7 +31,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div
         className={`w-[350px] h-[100vh] border-l-2 border-[#37464f] p-[40px]`}
       >
-        <p>9999</p>
+        <p>• An Open TriviaDB client</p>
       </div>
     </div>
   );
