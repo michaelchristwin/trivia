@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+import Login from "./Login";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -29,8 +31,18 @@ function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <div className={`flex-grow`}>{children}</div>
       <div
-        className={`w-[350px] h-[100vh] border-l-2 border-[#37464f] p-[40px]`}
+        className={`w-[350px] h-[100vh] border-l-2 border-[#37464f] space-y-3 p-[40px]`}
       >
+        <Login>
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className={`bg-background border-2 text-[12px] font-bold text-secondary2 block mx-auto rounded-[6px] border-secondary2 w-[70px] h-[30px]`}
+          >
+            Signin
+          </motion.button>
+        </Login>
         <p>• An Open TriviaDB client</p>
       </div>
     </div>
