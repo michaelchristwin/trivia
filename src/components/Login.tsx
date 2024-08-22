@@ -1,6 +1,5 @@
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
@@ -23,6 +22,9 @@ function Login({ children }: { children: React.ReactNode }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   const handleSubmit = async () => {
+    if (Object.values(formData).length === 0) {
+      return;
+    }
     try {
       const res = await fetch("http://localhost:8080/signin", {
         method: "POST",
@@ -71,11 +73,9 @@ function Login({ children }: { children: React.ReactNode }) {
 
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction asChild>
-            <Button type="button" onClick={handleSubmit}>
-              Login
-            </Button>
-          </AlertDialogAction>
+          <Button type="button" onClick={handleSubmit}>
+            Login
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
