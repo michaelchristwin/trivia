@@ -51,7 +51,7 @@ function Login({ children }: { children: React.ReactNode }) {
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent className={`border-0 space-y-4`}>
         <AlertDialogHeader>
-          <AlertDialogTitle>Login</AlertDialogTitle>
+          <AlertDialogTitle>Login2</AlertDialogTitle>
         </AlertDialogHeader>
 
         <Input
