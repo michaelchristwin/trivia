@@ -10,11 +10,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
-interface FormError {
+export interface FormError {
   email: string;
   password: string;
 }
 function Signin({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -39,7 +40,7 @@ function Signin({ children }: { children: React.ReactNode }) {
     }
 
     setErrors(errors);
-    return Object.keys(errors).length === 0;
+    return !Object.values(errors).some((error) => error !== "");
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -63,51 +64,59 @@ function Signin({ children }: { children: React.ReactNode }) {
         // Checks if status is not in the range of 200-299
         throw new Error(`Error: ${res.status} ${res.statusText}`);
       }
+      setOpen(false);
+      alert("Account Created");
       setFormData({ email: "", password: "" });
       const data = await res.json(); // Assuming the response is in JSON
       console.log("Login successful", data);
     } catch (error) {
-      console.error("Login failed", error);
+      console.error("Signin failed", error);
     }
+  };
+  const handleCancel = () => {
+    setErrors({ email: "", password: "" });
+    setFormData({ email: "", password: "" });
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-      <AlertDialogContent className={`border-0 h-[300px]`}>
+      <AlertDialogContent className={`border-0 h-[350px]`}>
         <AlertDialogHeader>
-          <AlertDialogTitle className={`text-[20px]`}>Signin</AlertDialogTitle>
+          <AlertDialogTitle className={`text-[23px] block mx-auto`}>
+            Signin
+          </AlertDialogTitle>
         </AlertDialogHeader>
 
-        <div>
+        <div className={`w-full block space-y-[2px]`}>
           <Input
-            type="text"
+            type="email"
             onChange={handleChange}
             value={email}
             name="email"
             placeholder="Enter your email"
-            className={`focus-visible:`}
+            className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
           {errors.email && (
-            <p className={`text-[7px] text-red-500`}>{errors.email}</p>
+            <p className={`text-[7px] ps-2 text-red-500`}>{errors.email}</p>
           )}
         </div>
-        <div>
+        <div className={`w-full block space-y-[2px]`}>
           <Input
-            type="text"
+            type="password"
             onChange={handleChange}
             name="password"
             value={password}
             placeholder="Enter your password"
-            className={`focus:border-0`}
+            className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
           {errors.password && (
-            <p className={`text-[7px] text-red-500`}>{errors.password}</p>
+            <p className={`text-[7px] ps-2 text-red-500`}>{errors.password}</p>
           )}
         </div>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel onClick={handleCancel}>Cancel</AlertDialogCancel>
           <Button type="button" onClick={handleSubmit}>
             Signin
           </Button>

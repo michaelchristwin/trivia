@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import Signin from "./Signin";
+import Login from "./Login";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -33,16 +34,28 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div
         className={`w-[350px] h-[100vh] border-l-2 border-[#37464f] space-y-3 p-[40px]`}
       >
-        <Signin>
-          <motion.button
-            type="button"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className={`bg-background border-2 text-[12px] font-bold text-secondary2 block mx-auto rounded-[6px] border-secondary2 w-[70px] h-[30px]`}
-          >
-            Signin
-          </motion.button>
-        </Signin>
+        <div className={`flex w-[160px] h-[30px] mx-auto`}>
+          <Signin>
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className={`bg-indigo-500 text-[12px] font-bold text-white block mx-auto rounded-[6px] w-[70px] h-[30px]`}
+            >
+              Signin
+            </motion.button>
+          </Signin>
+          <Login>
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className={`bg-indigo-500 text-[12px] font-bold text-white block mx-auto rounded-[6px] w-[70px] h-[30px]`}
+            >
+              Login
+            </motion.button>
+          </Login>
+        </div>
         <p>• An Open TriviaDB client</p>
       </div>
     </div>
