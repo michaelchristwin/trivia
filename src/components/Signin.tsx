@@ -47,7 +47,8 @@ function Signin({ children }: { children: React.ReactNode }) {
     const { value, name } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       if (!validate()) {
         throw Error("form data is invalid");
@@ -66,9 +67,8 @@ function Signin({ children }: { children: React.ReactNode }) {
       }
       setOpen(false);
       alert("Account Created");
-      setFormData({ email: "", password: "" });
-      const data = await res.json(); // Assuming the response is in JSON
-      console.log("Login successful", data);
+      setFormData({ email: "", password: "" }); // Assuming the response is in JSON
+      console.log("Login successful", res);
     } catch (error) {
       console.error("Signin failed", error);
     }
@@ -81,46 +81,49 @@ function Signin({ children }: { children: React.ReactNode }) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-      <AlertDialogContent className={`border-0 h-[350px]`}>
-        <AlertDialogHeader>
+      <AlertDialogContent className={`border-0 h-[350px] !block space-y-5`}>
+        <AlertDialogHeader className={`h-fit`}>
           <AlertDialogTitle className={`text-[23px] block mx-auto`}>
             Signin
           </AlertDialogTitle>
         </AlertDialogHeader>
+        <form onSubmit={handleSubmit} className={`h-fit space-y-[30px] w-full`}>
+          <div className={`w-full block space-y-[2px]`}>
+            <Input
+              type="email"
+              onChange={handleChange}
+              value={email}
+              name="email"
+              placeholder="Enter your email"
+              className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
+            />
+            {errors.email && (
+              <p className={`text-[7px] ps-2 text-red-500`}>{errors.email}</p>
+            )}
+          </div>
+          <div className={`w-full block space-y-[2px]`}>
+            <Input
+              type="password"
+              onChange={handleChange}
+              name="password"
+              value={password}
+              placeholder="Enter your password"
+              className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
+            />
+            {errors.password && (
+              <p className={`text-[7px] ps-2 text-red-500`}>
+                {errors.password}
+              </p>
+            )}
+          </div>
 
-        <div className={`w-full block space-y-[2px]`}>
-          <Input
-            type="email"
-            onChange={handleChange}
-            value={email}
-            name="email"
-            placeholder="Enter your email"
-            className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
-          />
-          {errors.email && (
-            <p className={`text-[7px] ps-2 text-red-500`}>{errors.email}</p>
-          )}
-        </div>
-        <div className={`w-full block space-y-[2px]`}>
-          <Input
-            type="password"
-            onChange={handleChange}
-            name="password"
-            value={password}
-            placeholder="Enter your password"
-            className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
-          />
-          {errors.password && (
-            <p className={`text-[7px] ps-2 text-red-500`}>{errors.password}</p>
-          )}
-        </div>
-
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={handleCancel}>Cancel</AlertDialogCancel>
-          <Button type="button" onClick={handleSubmit}>
-            Signin
-          </Button>
-        </AlertDialogFooter>
+          <AlertDialogFooter>
+            <AlertDialogCancel type={"button"} onClick={handleCancel}>
+              Cancel
+            </AlertDialogCancel>
+            <Button type={"submit"}>Signin</Button>
+          </AlertDialogFooter>
+        </form>
       </AlertDialogContent>
     </AlertDialog>
   );

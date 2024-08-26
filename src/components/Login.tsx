@@ -64,13 +64,13 @@ function Login({ children }: { children: React.ReactNode }) {
       setOpen(false);
       alert("Login Sucessful");
       setFormData({ email: "", password: "" });
-      const data = await res.json(); // Assuming the response is in JSON
-      console.log("Login successful", data);
+      // Assuming the response is in JSON
+      console.log("Login successful", res);
     } catch (error) {
       console.error("Login failed", error);
     }
   };
-
+  console.log(errors);
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
