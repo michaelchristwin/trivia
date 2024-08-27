@@ -64,13 +64,16 @@ function Login({ children }: { children: React.ReactNode }) {
       setOpen(false);
       alert("Login Sucessful");
       setFormData({ email: "", password: "" });
-      // Assuming the response is in JSON
+
       console.log("Login successful", res);
     } catch (error) {
       console.error("Login failed", error);
     }
   };
-  console.log(errors);
+  const handleCancel = () => {
+    setErrors({ email: "", password: "" });
+    setFormData({ email: "", password: "" });
+  };
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -81,38 +84,43 @@ function Login({ children }: { children: React.ReactNode }) {
           </AlertDialogTitle>
         </AlertDialogHeader>
 
-        <div className={`w-full block space-y-[2px]`}>
-          <Input
-            type={"email"}
-            onChange={handleChange}
-            value={email}
-            name="email"
-            placeholder="Enter your email"
-            className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
-          />
-          {errors.email && (
-            <p className={`text-[7px] ps-2 text-red-500`}>{errors.email}</p>
-          )}
-        </div>
-        <div className={`w-full block space-y-[2px]`}>
-          <Input
-            type={"password"}
-            onChange={handleChange}
-            name="password"
-            value={password}
-            placeholder="Enter your password"
-            className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
-          />
-          {errors.password && (
-            <p className={`text-[7px] ps-2 text-red-500`}>{errors.password}</p>
-          )}
-        </div>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <Button type="button" onClick={handleSubmit}>
-            Login
-          </Button>
-        </AlertDialogFooter>
+        <form onSubmit={handleSubmit} className={`h-fit space-y-[30px] w-full`}>
+          <div className={`w-full block space-y-[2px]`}>
+            <Input
+              type="email"
+              onChange={handleChange}
+              value={email}
+              name="email"
+              placeholder="Enter your email"
+              className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
+            />
+            {errors.email && (
+              <p className={`text-[7px] ps-2 text-red-500`}>{errors.email}</p>
+            )}
+          </div>
+          <div className={`w-full block space-y-[2px]`}>
+            <Input
+              type="password"
+              onChange={handleChange}
+              name="password"
+              value={password}
+              placeholder="Enter your password"
+              className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
+            />
+            {errors.password && (
+              <p className={`text-[7px] ps-2 text-red-500`}>
+                {errors.password}
+              </p>
+            )}
+          </div>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel type={"button"} onClick={handleCancel}>
+              Cancel
+            </AlertDialogCancel>
+            <Button type={"submit"}>Signin</Button>
+          </AlertDialogFooter>
+        </form>
       </AlertDialogContent>
     </AlertDialog>
   );
