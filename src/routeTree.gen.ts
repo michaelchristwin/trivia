@@ -80,12 +80,54 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({
-  IndexLazyRoute,
-  AboutLazyRoute,
-  ProfileLazyRoute,
-  SubjectsSubjectRoute,
-})
+export interface FileRoutesByFullPath {
+  '/': typeof IndexLazyRoute
+  '/about': typeof AboutLazyRoute
+  '/profile': typeof ProfileLazyRoute
+  '/subjects/$subject': typeof SubjectsSubjectRoute
+}
+
+export interface FileRoutesByTo {
+  '/': typeof IndexLazyRoute
+  '/about': typeof AboutLazyRoute
+  '/profile': typeof ProfileLazyRoute
+  '/subjects/$subject': typeof SubjectsSubjectRoute
+}
+
+export interface FileRoutesById {
+  __root__: typeof rootRoute
+  '/': typeof IndexLazyRoute
+  '/about': typeof AboutLazyRoute
+  '/profile': typeof ProfileLazyRoute
+  '/subjects/$subject': typeof SubjectsSubjectRoute
+}
+
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/about' | '/profile' | '/subjects/$subject'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/about' | '/profile' | '/subjects/$subject'
+  id: '__root__' | '/' | '/about' | '/profile' | '/subjects/$subject'
+  fileRoutesById: FileRoutesById
+}
+
+export interface RootRouteChildren {
+  IndexLazyRoute: typeof IndexLazyRoute
+  AboutLazyRoute: typeof AboutLazyRoute
+  ProfileLazyRoute: typeof ProfileLazyRoute
+  SubjectsSubjectRoute: typeof SubjectsSubjectRoute
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexLazyRoute: IndexLazyRoute,
+  AboutLazyRoute: AboutLazyRoute,
+  ProfileLazyRoute: ProfileLazyRoute,
+  SubjectsSubjectRoute: SubjectsSubjectRoute,
+}
+
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 

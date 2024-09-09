@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import Signin from "./Signin";
-import Login from "./Login";
+import AuthModal from "@/components/AuthModal";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -35,17 +34,18 @@ function Layout({ children }: { children: React.ReactNode }) {
         className={`w-[350px] h-[100vh] border-l-2 border-[#37464f] space-y-3 p-[40px]`}
       >
         <div className={`flex w-[160px] h-[30px] mx-auto`}>
-          <Signin>
+          <AuthModal title="Signup">
             <motion.button
               type="button"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className={`bg-indigo-500 text-[12px] font-bold text-white block mx-auto rounded-[6px] w-[70px] h-[30px]`}
             >
-              Signin
+              Signup
             </motion.button>
-          </Signin>
-          <Login>
+          </AuthModal>
+
+          <AuthModal title="Login">
             <motion.button
               type="button"
               whileHover={{ scale: 1.1 }}
@@ -54,7 +54,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             >
               Login
             </motion.button>
-          </Login>
+          </AuthModal>
         </div>
         <p>• An Open TriviaDB client</p>
       </div>
