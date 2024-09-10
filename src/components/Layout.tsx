@@ -1,12 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import AuthModal from "@/components/AuthModal";
+import Profile from "@/components/Profile";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className={`flex w-full`}>
       <div
-        className={`w-[260px] h-[100vh] flex flex-col p-[40px] border-r-2 border-[#37464f]`}
+        className={`w-[260px] h-[100vh] flex flex-col5 p-[40px] border-r-2 border-[#37464f]`}
       >
         <p className={`merienda font-[900] text-[25px] text-secondary2`}>
           trivia
@@ -57,6 +58,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           </AuthModal>
         </div>
         <p>• An Open TriviaDB client</p>
+        <Profile />
       </div>
     </div>
   );

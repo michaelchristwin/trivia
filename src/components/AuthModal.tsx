@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import { useAuthStore } from "./Profile";
 
 type Inputs = {
   email: string;
@@ -18,7 +19,7 @@ type Inputs = {
 };
 interface LoginFCProps {
   children: React.ReactNode;
-  title: string;
+  title: "Login" | "Signup";
 }
 function AuthModal({ children, title }: LoginFCProps) {
   const {
@@ -30,10 +31,12 @@ function AuthModal({ children, title }: LoginFCProps) {
   } = useForm<Inputs>();
   const [open, setOpen] = useState(false);
 
+  const setUser = useAuthStore((state) => state.setUser);
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const res = await fetch("http://localhost:8080/login", {
+      const res = await fetch(`http://localhost:8080/${title.toLowerCase()}`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -44,8 +47,14 @@ function AuthModal({ children, title }: LoginFCProps) {
         // Checks if status is not in the range of 200-299
         throw new Error(`Error: ${res.status} ${res.statusText}`);
       }
+      if (title === "Login") {
+        const data = await res.json();
+        setUser({ user: { email: data.email }, isAuthenticated: true });
+      }
       setOpen(false);
-      alert("Login Sucessful");
+
+      alert("Action Sucessful");
+      reset();
 
       console.log("Login successful", res);
     } catch (error) {
@@ -78,7 +87,7 @@ function AuthModal({ children, title }: LoginFCProps) {
               className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
             />
             {errors.email?.type === "required" && (
-              <p role={"alert"} className={`text-[7px] ps-2 text-red-500`}>
+              <p role={"alert"} className={`text-[10px] ps-2 text-red-500`}>
                 Email is required
               </p>
             )}
@@ -91,7 +100,7 @@ function AuthModal({ children, title }: LoginFCProps) {
               className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
             />
             {errors.password?.type === "required" && (
-              <p role="alert" className={`text-[7px] ps-2 text-red-500`}>
+              <p role="alert" className={`text-[10px] ps-2 text-red-500`}>
                 Password is required
               </p>
             )}
@@ -101,7 +110,7 @@ function AuthModal({ children, title }: LoginFCProps) {
             <AlertDialogCancel type={"button"} onClick={handleCancel}>
               Cancel
             </AlertDialogCancel>
-            <Button type={"submit"}>Signin</Button>
+            <Button type={"submit"}>{title}</Button>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>

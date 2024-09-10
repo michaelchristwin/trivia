@@ -23,7 +23,7 @@ function Index() {
             whileTap={{ scale: 0.9 }}
             type="button"
             key={subject.id}
-            className={`${colorVariants[subject.color as keyof typeof colorVariants]} px-1 h-[43px] rounded-[6px] text-[16px]`}
+            className={`${colorVariants[subject.color as keyof typeof colorVariants]} px-1 h-[43px] leading-normal rounded-[6px] text-[0.69rem] md:text-[0.81rem] lg:text-[0.87rem]`}
           >
             {subject.name}
           </motion.button>
