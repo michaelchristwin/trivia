@@ -17,11 +17,11 @@ type Inputs = {
   email: string;
   password: string;
 };
-interface LoginFCProps {
+interface AuthFCProps {
   children: React.ReactNode;
   title: "Login" | "Signup";
 }
-function AuthModal({ children, title }: LoginFCProps) {
+function AuthModal({ children, title }: AuthFCProps) {
   const {
     register,
     handleSubmit,
@@ -55,8 +55,6 @@ function AuthModal({ children, title }: LoginFCProps) {
 
       alert("Action Sucessful");
       reset();
-
-      console.log("Login successful", res);
     } catch (error) {
       console.error("Login failed", error);
     }
