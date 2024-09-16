@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import { useAuthStore } from "./Profile";
+import useAuthStore from "@/context/store";
 
 type Inputs = {
   email: string;
@@ -30,8 +30,9 @@ function AuthModal({ children, title }: AuthFCProps) {
     formState: { errors },
   } = useForm<Inputs>();
   const [open, setOpen] = useState(false);
-
+  console.log("useAuthStore:", useAuthStore);
   const setUser = useAuthStore((state) => state.setUser);
+  console.log("setUser function:", setUser);
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const res = await fetch(`http://localhost:8080/${title.toLowerCase()}`, {
@@ -49,7 +50,7 @@ function AuthModal({ children, title }: AuthFCProps) {
       }
       if (title === "Login") {
         const data = await res.json();
-        setUser({ user: { email: data.email }, isAuthenticated: true });
+        setUser({ email: data.email });
       }
       setOpen(false);
 
