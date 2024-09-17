@@ -15,9 +15,14 @@ interface StoreState {
 }
 
 const isExpired = (timestamp: number | null): boolean => {
-  if (timestamp === null) return true; // Consider null as expired<State & Actions> or return false based on your logic
-  const now = new Date().getTime();
-  return now - timestamp > 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  if (timestamp === null) {
+    console.log("Timestamp is null, considering expired");
+    return true; // Consider null as expired or return false based on your logic
+  }
+  const now = Date.now();
+  const expired = now - timestamp > 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  console.log(`Timestamp: ${timestamp}, Now: ${now}, Expired: ${expired}`);
+  return expired;
 };
 
 const useAuthStore = create<StoreState>()(
@@ -30,11 +35,11 @@ const useAuthStore = create<StoreState>()(
         set({
           user: user,
           isAuthenticated: true,
-          timestamp: new Date().getTime(),
+          timestamp: Date.now(),
         }),
-      clearUser: () =>
-        set({ user: null, isAuthenticated: false, timestamp: null }),
-
+      clearUser: () => {
+        set({ user: null, isAuthenticated: false, timestamp: null });
+      },
       checkExpiry: () => {
         const { timestamp } = get();
         if (isExpired(timestamp)) {
@@ -44,10 +49,16 @@ const useAuthStore = create<StoreState>()(
     }),
     {
       name: "user-storage",
+
       onRehydrateStorage(state) {
-        if (state && isExpired(state.timestamp)) {
-          state.clearUser();
-        }
+        console.log("Starting rehydration");
+        return (restoredState, error) => {
+          if (!error && restoredState && isExpired(restoredState?.timestamp)) {
+            console.log("State is expired, scheduling clearUser()");
+            console.log("Clearing user");
+            state.clearUser();
+          }
+        };
       },
     }
   )

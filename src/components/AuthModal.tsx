@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import useAuthStore from "@/context/store";
+import Dialog from "./Dialog";
 
 type Inputs = {
   email: string;
@@ -30,9 +31,7 @@ function AuthModal({ children, title }: AuthFCProps) {
     formState: { errors },
   } = useForm<Inputs>();
   const [open, setOpen] = useState(false);
-  console.log("useAuthStore:", useAuthStore);
   const setUser = useAuthStore((state) => state.setUser);
-  console.log("setUser function:", setUser);
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const res = await fetch(`http://localhost:8080/${title.toLowerCase()}`, {
@@ -50,6 +49,7 @@ function AuthModal({ children, title }: AuthFCProps) {
       }
       if (title === "Login") {
         const data = await res.json();
+        console.log(data);
         setUser({ email: data.email });
       }
       setOpen(false);
@@ -64,10 +64,11 @@ function AuthModal({ children, title }: AuthFCProps) {
     reset();
   };
   console.log(watch("email"));
+
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-      <AlertDialogContent className={`border-0 h-[350px]`}>
+      <AlertDialogContent className={`border-0 h-[390px]`}>
         <AlertDialogHeader>
           <AlertDialogTitle className={`text-[23px] block mx-auto`}>
             {title}
@@ -114,6 +115,7 @@ function AuthModal({ children, title }: AuthFCProps) {
         </form>
       </AlertDialogContent>
     </AlertDialog>
+    // <Dialog />
   );
 }
 
