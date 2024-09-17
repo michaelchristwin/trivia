@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import AuthModal from "@/components/AuthModal";
 import Profile from "@/components/Profile";
-import useAuthStore from "@/context/store";
+import useAuthStore from "@/context/auth.store";
 import { CgProfile } from "react-icons/cg";
 
 function Layout({ children }: { children: React.ReactNode }) {

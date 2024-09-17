@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import useAuthStore from "@/context/store";
+import useAuthStore from "@/context/auth.store";
 //import Dialog from "./Dialog";
 
 type Inputs = {
