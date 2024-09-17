@@ -3,6 +3,7 @@ import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -12,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import useAuthStore from "@/context/store";
-import Dialog from "./Dialog";
+//import Dialog from "./Dialog";
 
 type Inputs = {
   email: string;
@@ -69,10 +70,11 @@ function AuthModal({ children, title }: AuthFCProps) {
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent className={`border-0 h-[390px]`}>
-        <AlertDialogHeader>
+        <AlertDialogHeader className={``}>
           <AlertDialogTitle className={`text-[23px] block mx-auto`}>
             {title}
           </AlertDialogTitle>
+          <AlertDialogDescription></AlertDialogDescription>
         </AlertDialogHeader>
 
         <form
@@ -115,7 +117,6 @@ function AuthModal({ children, title }: AuthFCProps) {
         </form>
       </AlertDialogContent>
     </AlertDialog>
-    // <Dialog />
   );
 }
 

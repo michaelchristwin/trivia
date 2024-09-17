@@ -25,14 +25,14 @@ function Dialog() {
     };
   }, [dialogRef]);
   return (
-    <div className={`relative`}>
+    <div className={`relative w-[100vw] h-[100vh]`}>
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-10 transition-all duration-300"></div>
       )}
 
       <dialog
         ref={dialogRef}
-        className={`fixed top-1/2 left-1/2  h-[300px] transform -translate-x-[50] -translate-y-1/2 w-96 p-6 bg-background text-white rounded-lg shadow-lg z-20 transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0"}`}
+        className={`fixed top-[50%] max-w-lg left-[50%] h-[300px] transform translate-x-[-50%] translate-y-[-50%] w-96 p-6 bg-background text-white rounded-lg shadow-lg z-20 pointer-events-auto transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0"}`}
       >
         This is a fucking dialog ni**a
       </dialog>
