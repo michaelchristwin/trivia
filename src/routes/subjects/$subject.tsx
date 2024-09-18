@@ -1,10 +1,12 @@
 import { createFileRoute, useRouter, useBlocker } from "@tanstack/react-router";
 import { isTokenExpired, refreshSessionToken } from "@/utils/session.manager";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { shuffleArray, TriviaDBResponse } from "@/utils/subject.details";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
 import Done from "@/components/Done";
+import useQuizStore from "@/context/quiz.store";
+import useEventListener from "@/hooks/useEventListener";
 
 const variants = {
   enter: (direction: number) => {
@@ -63,6 +65,8 @@ function Quiz() {
   const response = Route.useLoaderData<TriviaDBResponse>();
   const router = useRouter();
   const { amount, difficulty, type } = Route.useLoaderDeps();
+  const updateQuizParams = useQuizStore((state) => state.updateQuizParams);
+  const score = useQuizStore((state) => state.score);
   useEffect(() => {
     (async () => {
       if (response.response_code === 4) {
@@ -85,11 +89,10 @@ function Quiz() {
     const data = response.results;
 
     console.log(response);
-
+    updateQuizParams({ total: data.length });
     const [[page, direction], setPage] = useState([0, 0]);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-    const [score, setScore] = useState(0);
     const [areOptionsDisabled, setAreOptionsDisabled] = useState(false);
     const [isComplete, setIsComplete] = useState(false);
     const [qIndex, setQIndex] = useState(0);
@@ -104,8 +107,8 @@ function Quiz() {
 
     const shuffledChoices = useMemo(() => {
       const choices = [...incorrect_answers, correct_answer];
-      return shuffleArray(choices);
-    }, [qIndex]);
+      return shuffleArray(choices, question);
+    }, [correct_answer, correct_answer]);
 
     const paginate = (newDirection: number) => {
       if (qIndex + 1 !== data.length) {
@@ -118,7 +121,9 @@ function Quiz() {
       setIsCorrect(_isCorrect);
       setAreOptionsDisabled(true);
       if (_isCorrect) {
-        setScore((prevScore) => prevScore + 1);
+        updateQuizParams({ score: 1, correct_answers: 1 });
+      } else {
+        updateQuizParams({ incorrect_answers: 1 });
       }
     };
     const nextQ = () => {
@@ -141,6 +146,41 @@ function Quiz() {
     const handleCompleteClick = () => {
       setIsComplete(true);
     };
+    const choiceRefs = useRef<(HTMLButtonElement | null)[]>([]);
+    //Keybindings Listener
+    useEventListener(
+      "keypress",
+      (e: KeyboardEvent) => {
+        if (e.key === "Enter") {
+          if (selectedOption && !areOptionsDisabled) {
+            checkAnswer(selectedOption);
+          } else if (areOptionsDisabled && qIndex + 1 !== data.length) {
+            nextQ();
+          } else if (areOptionsDisabled && qIndex + 1 === data.length) {
+            handleCompleteClick();
+          }
+        }
+      },
+      undefined,
+      [selectedOption, areOptionsDisabled, qIndex]
+    );
+    useEventListener(
+      "keypress",
+      (e: KeyboardEvent) => {
+        // Check if the key pressed corresponds to a choice (1-based index)
+        const keyPressed = Number(e.key); // Convert the key to a number
+        if (keyPressed >= 1 && keyPressed <= shuffledChoices.length) {
+          // If the key is valid (within the range of choices)
+          const i = keyPressed - 1;
+          if (choiceRefs.current[i]) {
+            choiceRefs.current[i].click();
+          }
+        }
+      },
+      undefined, // Default to listening on the window
+      [shuffledChoices, areOptionsDisabled] // Include relevant dependencies
+    );
+    console.log(selectedOption);
     return (
       <div className={`block p-[10px] w-full h-screen relative`}>
         {!isComplete && (
@@ -188,7 +228,10 @@ function Quiz() {
                             value={choice}
                             disabled={areOptionsDisabled}
                             key={i}
-                            dangerouslySetInnerHTML={{ __html: choice }}
+                            ref={(el) => (choiceRefs.current[i] = el)}
+                            dangerouslySetInnerHTML={{
+                              __html: `${i + 1}: ${choice}`,
+                            }}
                             className={`border border-neutral-700 ${optionsClasses(choice)}`}
                           ></ToggleGroupItem>
                         ))}

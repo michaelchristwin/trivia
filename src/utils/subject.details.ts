@@ -1,3 +1,5 @@
+import seedrandom from "seedrandom";
+
 export interface SubjectData {
   name: string;
   id: number;
@@ -26,14 +28,14 @@ export const subjects: SubjectData[] = [
   },
 ];
 
-export function shuffleArray(array: any[]) {
-  for (let i = array.length - 1; i > 0; i--) {
-    // Generate a random index from 0 to i
-    const j = Math.floor(Math.random() * (i + 1));
-    // Swap elements array[i] and array[j]
-    [array[i], array[j]] = [array[j], array[i]];
+export function shuffleArray(array: any[], seed: string) {
+  const rng = seedrandom(seed);
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
   }
-  return array;
+  return newArray;
 }
 
 // The array elements will be in random order

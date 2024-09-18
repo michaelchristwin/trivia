@@ -1,8 +1,11 @@
+import useQuizStore from "@/context/quiz.store";
 import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 
 function Done({ score }: { score: number }) {
   const navigate = useNavigate();
+  const correct_answers = useQuizStore((s) => s.correct_answers);
+  const incorrect_answers = useQuizStore((s) => s.incorrect_answers);
   return (
     <div className={`w-full block p-[20px]`}>
       <p className={`text-[18px] block mx-auto w-fit`}>
@@ -13,6 +16,10 @@ function Done({ score }: { score: number }) {
       >
         Your accuracy was {Math.round(score)}%
       </p>
+      <div className={`flex my-2 space-x-3`}>
+        <div>Correct answers: {correct_answers}</div>
+        <div>Incorrect answers: {incorrect_answers}</div>
+      </div>
       <motion.button
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.9 }}
