@@ -1,4 +1,5 @@
 import useQuizStore from "@/context/quiz.store";
+import useEventListener from "@/hooks/useEventListener";
 import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 
@@ -6,6 +7,13 @@ function Done({ score }: { score: number }) {
   const navigate = useNavigate();
   const correct_answers = useQuizStore((s) => s.correct_answers);
   const incorrect_answers = useQuizStore((s) => s.incorrect_answers);
+  useEventListener("keypress", (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      navigate({
+        to: "/",
+      });
+    }
+  });
   return (
     <div className={`w-full block p-[20px]`}>
       <p className={`text-[18px] block mx-auto w-fit`}>
