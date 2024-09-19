@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Done from "@/components/Done";
 import useQuizStore from "@/context/quiz.store";
 import useEventListener from "@/hooks/useEventListener";
+import ProgressBar from "@/components/ProgressBar";
 
 const variants = {
   enter: (direction: number) => {
@@ -180,7 +181,9 @@ function Quiz() {
       undefined, // Default to listening on the window
       [shuffledChoices, areOptionsDisabled] // Include relevant dependencies
     );
-    console.log(selectedOption);
+    const progress = useMemo(() => {
+      return (qIndex / data.length) * 100;
+    }, [qIndex, data.length]);
     return (
       <div className={`block p-[10px] w-full h-screen relative`}>
         {!isComplete && (
@@ -190,6 +193,7 @@ function Quiz() {
             >
               {category}
             </p>
+            <ProgressBar progress={progress} />
             <AnimatePresence initial={false} custom={direction}>
               <div>
                 <motion.div
