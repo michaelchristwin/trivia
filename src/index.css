@@ -37,6 +37,7 @@
 
 .dark {
   --background: 0 0% 3.9%;
+  --color-action: 60 100% 50%;
   --foreground: 0 0% 98%;
   --card: 0 0% 3.9%;
   --card-foreground: 0 0% 98%;

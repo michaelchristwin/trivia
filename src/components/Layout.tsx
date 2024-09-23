@@ -10,9 +10,9 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className={`flex w-full`}>
       <div
-        className={`w-[260px] h-[100vh] flex flex-col5 p-[40px] border-r-2 border-[#37464f]`}
+        className={`w-[260px] h-[100vh] flex flex-col p-[40px] border-r-2 border-[#37464f]`}
       >
-        <p className={`merienda font-[900] text-[25px] text-secondary2`}>
+        <p className={`merienda h-fit font-[900] text-[25px] text-secondary2`}>
           trivia
         </p>
         <ul className={`w-full mt-[40px] space-y-[20px]`}>
@@ -37,7 +37,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div
         className={`w-[350px] h-[100vh] border-l-2 border-[#37464f] space-y-3 p-[40px]`}
       >
-        <div className={`flex w-[160px] h-[30px] mx-auto`}>
+        <div className={`flex w-[160px] space-x-2 h-[30px] mx-auto`}>
           {!isAuthenticated ? (
             <>
               <AuthModal title="Signup">
@@ -45,7 +45,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                   type="button"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  className={`bg-indigo-500 text-[12px] font-bold text-white block mx-auto rounded-[6px] w-[70px] h-[30px]`}
+                  className={`bg-[#007BFF] text-[12px] font-bold text-white block mx-auto rounded-[100px] w-[80px] h-[30px]`}
                 >
                   Signup
                 </motion.button>
@@ -56,7 +56,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                   type="button"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  className={`bg-indigo-500 text-[12px] font-bold text-white block mx-auto rounded-[6px] w-[70px] h-[30px]`}
+                  className={`bg-indigo-500 text-[12px] font-bold text-white block mx-auto rounded-[100px] w-[80px] h-[30px]`}
                 >
                   Login
                 </motion.button>
