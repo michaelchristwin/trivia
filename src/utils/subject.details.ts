@@ -3,27 +3,32 @@ import seedrandom from "seedrandom";
 export interface SubjectData {
   name: string;
   id: number;
+  slug: string;
   color: string;
 }
 export const subjects: SubjectData[] = [
   {
     name: "Science: Computers",
     id: 18,
+    slug: "computer",
     color: "secondary2",
   },
   {
     name: "Science: Mathematics",
     id: 19,
+    slug: "mathematics",
     color: "orange",
   },
   {
     name: "General Knowledge",
     id: 9,
+    slug: "general-knowledge",
     color: "green",
   },
   {
     name: "History",
     id: 23,
+    slug: "history",
     color: "indigo",
   },
 ];
