@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
 import AuthModal from "@/components/AuthModal";
 import Profile from "@/components/Profile";
+import { useNavigate } from "@tanstack/react-router";
 import useAuthStore from "@/context/auth.store";
 import { CgProfile } from "react-icons/cg";
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   return (
     <div className={`flex w-full`}>
@@ -41,26 +42,21 @@ function Layout({ children }: { children: React.ReactNode }) {
           {!isAuthenticated ? (
             <>
               <AuthModal title="Signup">
-                <motion.button
+                <button
                   type="button"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className={`bg-[#007BFF] text-[12px] font-bold text-white block mx-auto rounded-[100px] w-[80px] h-[30px]`}
+                  className={`bg-neutral-600 hover:opacity-[0.7] text-[12px] font-bold text-white block mx-auto rounded-[5px] w-[100px] h-[30px]`}
                 >
                   Signup
-                </motion.button>
+                </button>
               </AuthModal>
 
-              <AuthModal title="Login">
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className={`bg-indigo-500 text-[12px] font-bold text-white block mx-auto rounded-[100px] w-[80px] h-[30px]`}
-                >
-                  Login
-                </motion.button>
-              </AuthModal>
+              <button
+                type="button"
+                onClick={() => navigate({ to: "/login" })}
+                className={`bg-secondary2 hover:opacity-[0.7] text-[12px] font-bold text-white block mx-auto rounded-[5px] w-[100px] h-[30px]`}
+              >
+                Login
+              </button>
             </>
           ) : (
             <CgProfile size={"30px"} className={`block mx-auto`} />
