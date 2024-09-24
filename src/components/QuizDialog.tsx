@@ -91,7 +91,7 @@ function QuizDialog({ children, details }: QuizDialogProps) {
         </div>
         <div className={`block w-full space-y-2`}>
           <p className={`block mx-auto font-bold w-fit underline`}>
-            Select nuber of questions:
+            Select number of questions:
           </p>
           <ToggleGroup
             type="single"

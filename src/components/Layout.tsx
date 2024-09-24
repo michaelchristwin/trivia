@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import Profile from "@/components/Profile";
 import { useNavigate } from "@tanstack/react-router";
 import useAuthStore from "@/context/auth.store";
 import { CgProfile } from "react-icons/cg";
+//import Profile from "@/components/Profile";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
@@ -60,8 +60,9 @@ function Layout({ children }: { children: React.ReactNode }) {
             <CgProfile size={"30px"} className={`block mx-auto`} />
           )}
         </div>
-        <p>• An Open TriviaDB client</p>
-        <Profile />
+
+        {/* <Profile /> */}
+        <div className={`w-[280px] rounded-[9px] h-[150px] bg-slate-800`}></div>
       </div>
     </div>
   );
