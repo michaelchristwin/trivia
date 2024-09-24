@@ -1,19 +1,20 @@
-import useAuthStore from "@/context/auth.store";
 import { createLazyFileRoute } from "@tanstack/react-router";
+import useAuthStore from "@/context/auth.store";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "@tanstack/react-router";
 
-export const Route = createLazyFileRoute("/login")({
-  component: LoginPage,
+export const Route = createLazyFileRoute("/signup")({
+  component: SignupPage,
 });
+
 type Inputs = {
   email: string;
   password: string;
 };
 
-function LoginPage() {
+function SignupPage() {
   const {
     register,
     handleSubmit,
@@ -25,7 +26,7 @@ function LoginPage() {
   const setUser = useAuthStore((state) => state.setUser);
   const onSubmit: SubmitHandler<Inputs> = async (InputData) => {
     try {
-      const res = await fetch(`http://localhost:8080/login`, {
+      const res = await fetch(`http://localhost:8080/signup`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -52,7 +53,7 @@ function LoginPage() {
   console.log(watch("email"));
   return (
     <div className={`p-[40px] text-white w-[500px] block mx-auto`}>
-      <h1 className={`text-[27px] font-bold text-center`}>Login</h1>
+      <h1 className={`text-[27px] font-bold text-center`}>Sign Up</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className={`h-fit space-y-[40px] py-[30px] rounded w-[100%] block mx-auto`}
@@ -83,15 +84,18 @@ function LoginPage() {
             </p>
           )}
         </div>
-        <Button type="submit" className={`block mx-auto`}>
-          Login
+        <Button
+          type="submit"
+          className={`block bg-neutral-600 hover:text-black text-white mx-auto`}
+        >
+          Sign Up
         </Button>
       </form>
       <Link
-        to="/signup"
+        to="/login"
         className={`text-[13px] text-center cursor-pointer underline block mx-auto`}
       >
-        Don't have an account
+        Already have an account
       </Link>
     </div>
   );

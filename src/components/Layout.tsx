@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import AuthModal from "@/components/AuthModal";
 import Profile from "@/components/Profile";
 import { useNavigate } from "@tanstack/react-router";
 import useAuthStore from "@/context/auth.store";
@@ -41,14 +40,13 @@ function Layout({ children }: { children: React.ReactNode }) {
         <div className={`flex w-[160px] space-x-2 h-[30px] mx-auto`}>
           {!isAuthenticated ? (
             <>
-              <AuthModal title="Signup">
-                <button
-                  type="button"
-                  className={`bg-neutral-600 hover:opacity-[0.7] text-[12px] font-bold text-white block mx-auto rounded-[5px] w-[100px] h-[30px]`}
-                >
-                  Signup
-                </button>
-              </AuthModal>
+              <button
+                onClick={() => navigate({ to: `/signup` })}
+                type="button"
+                className={`bg-neutral-600 hover:opacity-[0.7] text-[12px] font-bold text-white block mx-auto rounded-[5px] w-[100px] h-[30px]`}
+              >
+                Sign Up
+              </button>
 
               <button
                 type="button"

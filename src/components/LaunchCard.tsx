@@ -1,6 +1,3 @@
-interface LaunchCardProps {
-  children: React.ReactNode;
-}
 function LaunchCard() {
   return (
     <div
