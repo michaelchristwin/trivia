@@ -1,9 +1,9 @@
 import useAuthStore from "@/context/auth.store";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "@tanstack/react-router";
+import FloatingLabelInput from "@/components/FloatingLabelInput";
 
 export const Route = createLazyFileRoute("/login")({
   component: LoginPage,
@@ -58,10 +58,12 @@ function LoginPage() {
         className={`h-fit space-y-[40px] py-[30px] rounded w-[100%] block mx-auto`}
       >
         <div className={`w-full block space-y-[2px]`}>
-          <Input
+          <FloatingLabelInput
+            label="Email"
+            id="email"
             {...register("email", { required: true })}
             type="email"
-            placeholder="Enter your email"
+            placeholder=""
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
           {errors.email?.type === "required" && (
@@ -71,10 +73,12 @@ function LoginPage() {
           )}
         </div>
         <div className={`w-full block space-y-[2px]`}>
-          <Input
+          <FloatingLabelInput
+            label="Password"
+            id="password"
             {...register("password", { required: true })}
             type="password"
-            placeholder="Enter your password"
+            placeholder=""
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
           {errors.password?.type === "required" && (

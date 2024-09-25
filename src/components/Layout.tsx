@@ -62,7 +62,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* <Profile /> */}
-        <div className={`w-[280px] rounded-[9px] h-[150px] bg-slate-800`}></div>
+        <div className={`w-[280px] rounded-[9px] h-[150px] bg-gray-700`}></div>
       </div>
     </div>
   );

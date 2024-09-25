@@ -1,15 +1,17 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import useAuthStore from "@/context/auth.store";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "@tanstack/react-router";
+import FloatingLabelInput from "@/components/FloatingLabelInput";
 
 export const Route = createLazyFileRoute("/signup")({
   component: SignupPage,
 });
 
 type Inputs = {
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
 };
@@ -59,10 +61,42 @@ function SignupPage() {
         className={`h-fit space-y-[40px] py-[30px] rounded w-[100%] block mx-auto`}
       >
         <div className={`w-full block space-y-[2px]`}>
-          <Input
+          <FloatingLabelInput
+            label="First name"
+            {...register("first_name", { required: true })}
+            type="text"
+            id="first_name"
+            placeholder=""
+            className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
+          />
+          {errors.first_name?.type === "required" && (
+            <p role={"alert"} className={`text-[10px] ps-2 text-red-500`}>
+              First name is required
+            </p>
+          )}
+        </div>
+        <div className={`w-full block space-y-[2px]`}>
+          <FloatingLabelInput
+            label="Last name"
+            {...register("last_name", { required: true })}
+            type="text"
+            id="last_name"
+            placeholder=""
+            className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
+          />
+          {errors.last_name?.type === "required" && (
+            <p role={"alert"} className={`text-[10px] ps-2 text-red-500`}>
+              Last name is required
+            </p>
+          )}
+        </div>
+        <div className={`w-full block space-y-[2px]`}>
+          <FloatingLabelInput
+            label="Email"
             {...register("email", { required: true })}
             type="email"
-            placeholder="Enter your email"
+            id="email"
+            placeholder=""
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
           {errors.email?.type === "required" && (
@@ -72,10 +106,12 @@ function SignupPage() {
           )}
         </div>
         <div className={`w-full block space-y-[2px]`}>
-          <Input
+          <FloatingLabelInput
+            label="Password"
             {...register("password", { required: true })}
             type="password"
-            placeholder="Enter your password"
+            id="password"
+            placeholder=""
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
           {errors.password?.type === "required" && (
