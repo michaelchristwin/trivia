@@ -3,7 +3,9 @@ import useAuthStore from "@/context/auth.store";
 import { Button } from "@/components/ui/button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "@tanstack/react-router";
+import { IoEyeOutline, IoEyeOff } from "react-icons/io5";
 import FloatingLabelInput from "@/components/FloatingLabelInput";
+import { useState } from "react";
 
 export const Route = createLazyFileRoute("/signup")({
   component: SignupPage,
@@ -14,6 +16,7 @@ type Inputs = {
   last_name: string;
   email: string;
   password: string;
+  confirm_password: string;
 };
 
 function SignupPage() {
@@ -22,11 +25,15 @@ function SignupPage() {
     handleSubmit,
     watch,
     reset,
+
     formState: { errors },
   } = useForm<Inputs>();
 
   const setUser = useAuthStore((state) => state.setUser);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const onSubmit: SubmitHandler<Inputs> = async (InputData) => {
+    const { confirm_password, ...newInputData } = InputData;
     try {
       const res = await fetch(`http://localhost:8080/signup`, {
         method: "POST",
@@ -34,18 +41,17 @@ function SignupPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(InputData),
+        body: JSON.stringify(newInputData),
       });
 
       if (!res.ok) {
         // Checks if status is not in the range of 200-299
         throw new Error(`Error: ${res.status} ${res.statusText}`);
       }
-      const data = await res.json();
-      console.log(data);
-      setUser({ email: data.email });
 
-      alert("Action Sucessful");
+      const data = await res.json();
+      setUser({ email: data.email });
+      // alert("Action Sucessful");
       reset();
     } catch (error) {
       console.error("Login failed", error);
@@ -105,12 +111,54 @@ function SignupPage() {
             </p>
           )}
         </div>
-        <div className={`w-full block space-y-[2px]`}>
+        <div className={`w-full block space-y-[2px] relative`}>
+          {showPassword ? (
+            <IoEyeOff
+              className={`absolute top-[15px] right-2 z-20`}
+              role="button"
+              onClick={() => setShowPassword((p) => !p)}
+            />
+          ) : (
+            <IoEyeOutline
+              className={`absolute top-[15px] right-2 z-20`}
+              role="button"
+              onClick={() => setShowPassword((p) => !p)}
+            />
+          )}
+
           <FloatingLabelInput
             label="Password"
             {...register("password", { required: true })}
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
+            placeholder=""
+            className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
+          />
+          {errors.password?.type === "required" && (
+            <p role="alert" className={`text-[10px] ps-2 text-red-500`}>
+              Password is required
+            </p>
+          )}
+        </div>
+        <div className={`w-full block space-y-[2px] relative`}>
+          {showConfirmPassword ? (
+            <IoEyeOff
+              role="button"
+              className={`absolute top-[15px] right-2 z-20`}
+              onClick={() => setShowConfirmPassword((p) => !p)}
+            />
+          ) : (
+            <IoEyeOutline
+              role="button"
+              className={`absolute top-[15px] right-2 z-20`}
+              onClick={() => setShowConfirmPassword((p) => !p)}
+            />
+          )}
+          <FloatingLabelInput
+            label="Confirm password"
+            {...register("confirm_password", { required: true })}
+            type={showConfirmPassword ? "text" : "password"}
+            id="confirm_password"
             placeholder=""
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />

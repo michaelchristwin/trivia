@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "@tanstack/react-router";
 import FloatingLabelInput from "@/components/FloatingLabelInput";
+import { useState } from "react";
+import { IoEyeOff, IoEyeOutline } from "react-icons/io5";
 
 export const Route = createLazyFileRoute("/login")({
   component: LoginPage,
@@ -23,6 +25,7 @@ function LoginPage() {
   } = useForm<Inputs>();
 
   const setUser = useAuthStore((state) => state.setUser);
+  const [showPassword, setShowPassword] = useState(false);
   const onSubmit: SubmitHandler<Inputs> = async (InputData) => {
     try {
       const res = await fetch(`http://localhost:8080/login`, {
@@ -72,7 +75,21 @@ function LoginPage() {
             </p>
           )}
         </div>
-        <div className={`w-full block space-y-[2px]`}>
+        <div className={`w-full block space-y-[2px] relative`}>
+          {showPassword ? (
+            <IoEyeOff
+              className={`absolute top-[15px] right-2 z-20`}
+              role="button"
+              onClick={() => setShowPassword((p) => !p)}
+            />
+          ) : (
+            <IoEyeOutline
+              className={`absolute top-[15px] right-2 z-20`}
+              role="button"
+              onClick={() => setShowPassword((p) => !p)}
+            />
+          )}
+
           <FloatingLabelInput
             label="Password"
             id="password"
