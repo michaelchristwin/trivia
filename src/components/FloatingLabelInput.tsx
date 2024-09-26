@@ -1,5 +1,4 @@
-import { InputHTMLAttributes } from "react";
-
+import React, { InputHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 interface FloatingLabelInputProps
@@ -7,16 +6,15 @@ interface FloatingLabelInputProps
   label: string;
 }
 
-const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
-  label,
-  id,
-  className,
-  ...props
-}) => {
+const FloatingLabelInput = React.forwardRef<
+  HTMLInputElement,
+  FloatingLabelInputProps
+>(({ label, id, className, ...props }, ref) => {
   return (
     <div className="relative">
       <input
         id={id}
+        ref={ref}
         className={cn(
           `block px-2.5 pb-2.5 border pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-white appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`,
           className
@@ -34,6 +32,5 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
       </label>
     </div>
   );
-};
-
+});
 export default FloatingLabelInput;

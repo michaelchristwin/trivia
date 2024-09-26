@@ -12,11 +12,11 @@ export const Route = createLazyFileRoute("/signup")({
 });
 
 type Inputs = {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
-  confirm_password: string;
+  confirmPassword: string;
 };
 
 function SignupPage() {
@@ -25,15 +25,16 @@ function SignupPage() {
     handleSubmit,
     watch,
     reset,
-
     formState: { errors },
-  } = useForm<Inputs>();
-
+  } = useForm<Inputs>({
+    mode: "onBlur",
+  });
+  const password = watch("password");
   const setUser = useAuthStore((state) => state.setUser);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const onSubmit: SubmitHandler<Inputs> = async (InputData) => {
-    const { confirm_password, ...newInputData } = InputData;
+    const { confirmPassword, ...newInputData } = InputData;
     try {
       const res = await fetch(`http://localhost:8080/signup`, {
         method: "POST",
@@ -58,7 +59,6 @@ function SignupPage() {
     }
   };
 
-  console.log(watch("email"));
   return (
     <div className={`p-[40px] text-white w-[500px] block mx-auto`}>
       <h1 className={`text-[27px] font-bold text-center`}>Sign Up</h1>
@@ -69,13 +69,13 @@ function SignupPage() {
         <div className={`w-full block space-y-[2px]`}>
           <FloatingLabelInput
             label="First name"
-            {...register("first_name", { required: true })}
+            {...register("firstName", { required: true })}
             type="text"
-            id="first_name"
+            id="firstName"
             placeholder=""
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
-          {errors.first_name?.type === "required" && (
+          {errors.firstName?.type === "required" && (
             <p role={"alert"} className={`text-[10px] ps-2 text-red-500`}>
               First name is required
             </p>
@@ -84,13 +84,14 @@ function SignupPage() {
         <div className={`w-full block space-y-[2px]`}>
           <FloatingLabelInput
             label="Last name"
-            {...register("last_name", { required: true })}
+            {...register("lastName", { required: true })}
             type="text"
-            id="last_name"
+            id="lastName"
             placeholder=""
+            aria-invalid={errors.lastName ? "true" : "false"}
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
-          {errors.last_name?.type === "required" && (
+          {errors.lastName?.type === "required" && (
             <p role={"alert"} className={`text-[10px] ps-2 text-red-500`}>
               Last name is required
             </p>
@@ -99,15 +100,21 @@ function SignupPage() {
         <div className={`w-full block space-y-[2px]`}>
           <FloatingLabelInput
             label="Email"
-            {...register("email", { required: true })}
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                message: "Invalid email address",
+              },
+            })}
             type="email"
             id="email"
             placeholder=""
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
-          {errors.email?.type === "required" && (
+          {errors.email && (
             <p role={"alert"} className={`text-[10px] ps-2 text-red-500`}>
-              Email is required
+              {errors.email?.message}
             </p>
           )}
         </div>
@@ -128,15 +135,24 @@ function SignupPage() {
 
           <FloatingLabelInput
             label="Password"
-            {...register("password", { required: true })}
+            {...register("password", {
+              required: "Password is required",
+              pattern: {
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]{8,}$/,
+                message:
+                  "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+              },
+            })}
             type={showPassword ? "text" : "password"}
             id="password"
             placeholder=""
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
-          {errors.password?.type === "required" && (
+
+          {errors.password && (
             <p role="alert" className={`text-[10px] ps-2 text-red-500`}>
-              Password is required
+              {errors.password?.message}
             </p>
           )}
         </div>
@@ -156,15 +172,20 @@ function SignupPage() {
           )}
           <FloatingLabelInput
             label="Confirm password"
-            {...register("confirm_password", { required: true })}
+            {...register("confirmPassword", {
+              required: "Please confirm your password",
+              validate: (value) =>
+                value === password || "Passwords do not match",
+            })}
             type={showConfirmPassword ? "text" : "password"}
-            id="confirm_password"
+            id="confirmPassword"
             placeholder=""
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
-          {errors.password?.type === "required" && (
+
+          {errors.confirmPassword && (
             <p role="alert" className={`text-[10px] ps-2 text-red-500`}>
-              Password is required
+              {errors.confirmPassword?.message}
             </p>
           )}
         </div>
