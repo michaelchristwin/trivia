@@ -1,11 +1,11 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
-import useAuthStore from "@/context/auth.store";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "@tanstack/react-router";
 import { IoEyeOutline, IoEyeOff } from "react-icons/io5";
 import FloatingLabelInput from "@/components/FloatingLabelInput";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const Route = createLazyFileRoute("/signup")({
   component: SignupPage,
@@ -29,8 +29,9 @@ function SignupPage() {
   } = useForm<Inputs>({
     mode: "onBlur",
   });
+
   const password = watch("password");
-  const setUser = useAuthStore((state) => state.setUser);
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const onSubmit: SubmitHandler<Inputs> = async (InputData) => {
@@ -50,11 +51,17 @@ function SignupPage() {
         throw new Error(`Error: ${res.status} ${res.statusText}`);
       }
 
-      const data = await res.json();
-      setUser({ email: data.email });
+      console.log(res);
       // alert("Action Sucessful");
       reset();
+      toast.success("Sign up successfull", {
+        position: "top-center",
+      });
+      navigate({ to: "/login" });
     } catch (error) {
+      toast.error("Sign up failed", {
+        position: "top-center",
+      });
       console.error("Login failed", error);
     }
   };

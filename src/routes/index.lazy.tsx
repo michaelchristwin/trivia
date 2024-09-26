@@ -16,7 +16,7 @@ function Index() {
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.9 }}
-            className={`w-[280px] bg-gray-700 shadow-lg border border-gray-600 h-[180px] rounded-[8px]`}
+            className={`w-full min-w-[220px] bg-gray-700 shadow-lg border border-gray-600 h-[180px] rounded-[8px]`}
             role={`button`}
           >
             <img

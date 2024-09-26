@@ -1,11 +1,12 @@
 import useAuthStore from "@/context/auth.store";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "@tanstack/react-router";
 import FloatingLabelInput from "@/components/FloatingLabelInput";
 import { useState } from "react";
 import { IoEyeOff, IoEyeOutline } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 export const Route = createLazyFileRoute("/login")({
   component: LoginPage,
@@ -23,7 +24,7 @@ function LoginPage() {
     reset,
     formState: { errors },
   } = useForm<Inputs>();
-
+  const navigate = useNavigate();
   const setUser = useAuthStore((state) => state.setUser);
   const [showPassword, setShowPassword] = useState(false);
   const onSubmit: SubmitHandler<Inputs> = async (InputData) => {
@@ -44,10 +45,15 @@ function LoginPage() {
       const data = await res.json();
       console.log(data);
       setUser({ email: data.email });
-
-      alert("Action Sucessful");
+      toast.success(`Welcome back ${data.firstName}👋`, {
+        position: "top-center",
+      });
       reset();
+      navigate({ to: "/" });
     } catch (error) {
+      toast.error("Login failed", {
+        position: "top-center",
+      });
       console.error("Login failed", error);
     }
   };
@@ -63,15 +69,21 @@ function LoginPage() {
         <div className={`w-full block space-y-[2px]`}>
           <FloatingLabelInput
             label="Email"
-            id="email"
-            {...register("email", { required: true })}
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                message: "Invalid email address",
+              },
+            })}
             type="email"
+            id="email"
             placeholder=""
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
-          {errors.email?.type === "required" && (
+          {errors.email && (
             <p role={"alert"} className={`text-[10px] ps-2 text-red-500`}>
-              Email is required
+              {errors.email?.message}
             </p>
           )}
         </div>
@@ -92,15 +104,24 @@ function LoginPage() {
 
           <FloatingLabelInput
             label="Password"
+            {...register("password", {
+              required: "Password is required",
+              pattern: {
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]{8,}$/,
+                message:
+                  "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+              },
+            })}
+            type={showPassword ? "text" : "password"}
             id="password"
-            {...register("password", { required: true })}
-            type="password"
             placeholder=""
             className={`h-[45px] focus-visible:ring-0 focus-visible:ring-offset-0`}
           />
-          {errors.password?.type === "required" && (
+
+          {errors.password && (
             <p role="alert" className={`text-[10px] ps-2 text-red-500`}>
-              Password is required
+              {errors.password?.message}
             </p>
           )}
         </div>
