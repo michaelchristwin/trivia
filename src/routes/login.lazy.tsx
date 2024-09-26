@@ -44,8 +44,8 @@ function LoginPage() {
       }
       const data = await res.json();
       console.log(data);
-      setUser({ email: data.email });
-      toast.success(`Welcome back ${data.firstName}👋`, {
+      setUser({ email: data.data.email });
+      toast.success(`Welcome back ${data.data.FirstName} 👋`, {
         position: "top-center",
       });
       reset();
